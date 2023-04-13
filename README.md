@@ -6,3 +6,13 @@ Another project, [GPT-4-LLM](https://github.com/Instruction-Tuning-with-GPT-4/GP
 Most of the hard work has already been done. The goal of this project is to translate the dataset to Central Kurdish using an NLLB model. The resulting fine-tuned model, KurdishLlama, can be used for various natural language processing tasks in Central Kurdish.
 
 Stay tuned for updates on the progress of this project!
+
+
+### Translating the Dataset
+
+To translate the dataset, run the following command:
+```bash
+python translate_data.py ./data/alpaca_gpt4_data.json ./data/alpaca_gpt4_ckb.json
+```
+
+This command will use an NLLB model to translate the Alpaca project's GPT-4 data to Central Kurdish, and save the translated data to a new file called `alpaca_gpt4_ckb.json`.
