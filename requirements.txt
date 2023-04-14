@@ -1,0 +1,5 @@
+git+https://github.com/huggingface/transformers.git
+peft
+datasets
+torch>=2.0.0
+bitsandbytes
