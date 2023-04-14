@@ -15,6 +15,10 @@ from peft import (
 parser = argparse.ArgumentParser()
 parser.add_argument('--micro_batch_size', type=int, default=32, help='micor batch size')
 parser.add_argument('--epochs', type=int, default=3, help='epochs')
+parser.add_argument('--push_to_hub', type=bool, default=False, help='push to hub')
+parser.add_argument('--model_hub_id', type=str, default=None, help='model hub id')
+parser.add_argument('--hub_token', type=str, default=None, help='hub token')
+parser.add_argument('--wandb', type=bool, default=False, help='wandb')
 
 args = parser.parse_args()
 
@@ -164,6 +168,7 @@ trainer = transformers.Trainer(
         learning_rate=LEARNING_RATE,
         fp16=True,
         logging_steps=20,
+        logging_dir=f"./logs",
         evaluation_strategy="steps" if VAL_SET_SIZE > 0 else "no",
         save_strategy="steps",
         eval_steps=200 if VAL_SET_SIZE > 0 else None,
@@ -172,6 +177,14 @@ trainer = transformers.Trainer(
         save_total_limit=100,
         load_best_model_at_end=True if VAL_SET_SIZE > 0 else False,
         ddp_find_unused_parameters=False if ddp else None,
+        torch_compile=True, # optimizations
+        optim="adamw_torch_fused", # improved optimizer
+        # logging & evaluation strategies
+        report_to="wandb" if args.wandb else [],
+        push_to_hub=args.push_to_hub,
+        hub_strategy="every_save",
+        hub_model_id=args.hub_model_id,
+        hub_token=args.hub_token,
     ),
     data_collator=transformers.DataCollatorForLanguageModeling(tokenizer, mlm=False),
 )
