@@ -37,7 +37,7 @@ if not os.path.exists(lora_bin_path) and args.use_local:
     else:
         assert ('Checkpoint is not Found!')
 
-device = torch.devicei("cuda" if torch.cuda.is_available() else "cpu")
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 if device == "cuda":
     model = LlamaForCausalLM.from_pretrained(
