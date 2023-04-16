@@ -1,4 +1,5 @@
 import os
+import sys
 import torch
 import argparse
 import torch.nn as nn
@@ -13,6 +14,7 @@ from peft import (
 )
 
 parser = argparse.ArgumentParser()
+parser.add_argument("--data_path", type=str, default=None)
 parser.add_argument('--micro_batch_size', type=int, default=32, help='micor batch size')
 parser.add_argument('--epochs', type=int, default=3, help='epochs')
 parser.add_argument('--push_to_hub', type=bool, default=False, help='push to hub')
@@ -42,7 +44,7 @@ TARGET_MODULES = [
     "gate_proj",
     "up_proj",
 ]
-DATA_PATH = "data/alpaca_gpt4_ckb.json"
+DATA_PATH = args.data_path if args.data_path is not None else "data/alpaca_gpt4_ckb.json"
 OUTPUT_DIR = "checkpoints/"
 
 device_map = "auto"
@@ -153,6 +155,7 @@ else:
     val_data = None
 
 
+MAX_STEPS = max((len(data["train"]) - VAL_SET_SIZE) // BATCH_SIZE * EPOCHS, EPOCHS)
 
 # Training
 trainer = transformers.Trainer(
@@ -165,8 +168,9 @@ trainer = transformers.Trainer(
         gradient_accumulation_steps=GRADIENT_ACCUMULATION_STEPS,
         warmup_steps=100,
         num_train_epochs=EPOCHS,
+        max_steps=MAX_STEPS,
         learning_rate=LEARNING_RATE,
-        bp16=True,
+        fp16=True,
         logging_steps=20,
         logging_dir=f"./logs",
         evaluation_strategy="steps" if VAL_SET_SIZE > 0 else "no",
@@ -174,17 +178,16 @@ trainer = transformers.Trainer(
         eval_steps=200 if VAL_SET_SIZE > 0 else None,
         save_steps=200,
         output_dir=OUTPUT_DIR,
-        save_total_limit=100,
+        save_total_limit=10,
         load_best_model_at_end=True if VAL_SET_SIZE > 0 else False,
         ddp_find_unused_parameters=False if ddp else None,
-        torch_compile=True, # optimizations
-        optim="adamw_torch_fused", # improved optimizer
-        # logging & evaluation strategies
+        # torch_compile=True, # optimizations
+        optim="adamw_torch",
         report_to="wandb" if args.wandb else [],
         push_to_hub=args.push_to_hub,
         hub_strategy="every_save",
-        hub_model_id=args.hub_model_id,
-        hub_token=args.hub_token,
+        hub_model_id=args.hub_model_id if args.push_to_hub else None,
+        hub_token=args.hub_token if args.push_to_hub else None,
     ),
     data_collator=transformers.DataCollatorForLanguageModeling(tokenizer, mlm=False),
 )

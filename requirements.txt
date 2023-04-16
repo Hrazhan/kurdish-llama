@@ -3,3 +3,6 @@ peft
 datasets
 torch>=2.0.0
 bitsandbytes
+sentencepiece
+accelerate
+wandb
