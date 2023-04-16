@@ -75,7 +75,7 @@ config = LoraConfig(
     bias="none",
     task_type="CAUSAL_LM",
 )
-config.save_pretrained(OUTPUT_DIR)
+# config.save_pretrained(OUTPUT_DIR)
 
 model = get_peft_model(model, config)
 tokenizer.pad_token_id = 0
@@ -175,10 +175,10 @@ trainer = transformers.Trainer(
         logging_dir=f"./logs",
         evaluation_strategy="steps" if VAL_SET_SIZE > 0 else "no",
         save_strategy="steps",
-        eval_steps=200 if VAL_SET_SIZE > 0 else None,
-        save_steps=200,
+        eval_steps=500 if VAL_SET_SIZE > 0 else None,
+        save_steps=500,
         output_dir=OUTPUT_DIR,
-        save_total_limit=10,
+        save_total_limit=5,
         load_best_model_at_end=True if VAL_SET_SIZE > 0 else False,
         ddp_find_unused_parameters=False if ddp else None,
         # torch_compile=True, # optimizations
@@ -191,6 +191,7 @@ trainer = transformers.Trainer(
     ),
     data_collator=transformers.DataCollatorForLanguageModeling(tokenizer, mlm=False),
 )
+config.save_pretrained(OUTPUT_DIR)
 model.config.use_cache = False
 
 old_state_dict = model.state_dict
