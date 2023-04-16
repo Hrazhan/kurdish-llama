@@ -18,7 +18,7 @@ parser.add_argument("--data_path", type=str, default=None)
 parser.add_argument('--micro_batch_size', type=int, default=32, help='micor batch size')
 parser.add_argument('--epochs', type=int, default=3, help='epochs')
 parser.add_argument('--push_to_hub', type=bool, default=False, help='push to hub')
-parser.add_argument('--model_hub_id', type=str, default=None, help='model hub id')
+parser.add_argument('--hub_model_id', type=str, default=None, help='model hub id')
 parser.add_argument('--hub_token', type=str, default=None, help='hub token')
 parser.add_argument('--wandb', type=bool, default=False, help='wandb')
 
