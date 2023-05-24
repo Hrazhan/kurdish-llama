@@ -40,9 +40,7 @@ TARGET_MODULES = [
     "q_proj",
     "k_proj",
     "v_proj",
-    "down_proj",
-    "gate_proj",
-    "up_proj",
+    "o_proj"
 ]
 DATA_PATH = args.data_path if args.data_path is not None else "data/alpaca_gpt4_ckb.json"
 OUTPUT_DIR = "checkpoints/"
