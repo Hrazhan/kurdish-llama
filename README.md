@@ -19,3 +19,8 @@ This command will use an NLLB model to translate the Alpaca project's GPT-4 data
 
 
 The NLLB model has a tendency to produce erroneous translations where it repeats a single word throughout. To address this issue, the `data_cleaning.py` script will remove any instances where a single word is repeated consecutively at least three times.
+
+
+
+### Generation
+To test the model you can either run the `generate.py` script or use the `Inference` notebook: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Hrazhan/kurdish-llama/blob/main/Inference.ipynb)
