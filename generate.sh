@@ -1,5 +1,5 @@
 BASE_MODEL="decapoda-research/llama-7b-hf"
-LORA_PATH="razhan/kurdish-llama"
+LORA_PATH="razhan/kurdish-llama-lora"
 TYPE_WRITER=1 # whether output streamly
 
 CUDA_VISIBLE_DEVICES=0 python generate.py \

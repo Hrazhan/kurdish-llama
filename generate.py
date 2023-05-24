@@ -11,7 +11,7 @@ from transformers import LlamaTokenizer, LlamaForCausalLM, GenerationConfig
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--model_path", type=str, default="decapoda-research/llama-7b-hf")
-parser.add_argument("--lora_path", type=str, default="razhan/kurdish-llama")
+parser.add_argument("--lora_path", type=str, default="razhan/kurdish-llama-lora")
 parser.add_argument("--use_typewriter", type=int, default=1)
 parser.add_argument("--use_local", type=int, default=1)
 args = parser.parse_args()
@@ -132,7 +132,7 @@ gr.Interface(
     fn=evaluate,
     inputs=[
         gr.components.Textbox(
-            lines=2, label="Input", placeholder="Tell me about alpacas."
+            lines=2, label="Input", placeholder="دەربارەی Python شتێکم پێبڵێ"
         ),
         gr.components.Slider(minimum=0, maximum=1, value=0.1, label="Temperature"),
         gr.components.Slider(minimum=0, maximum=1, value=0.75, label="Top p"),
