@@ -16,3 +16,6 @@ python translate_data.py ./data/alpaca_gpt4_data.json ./data/alpaca_gpt4_ckb.jso
 ```
 
 This command will use an NLLB model to translate the Alpaca project's GPT-4 data to Central Kurdish, and save the translated data to a new file called `alpaca_gpt4_ckb.json`.
+
+
+The NLLB model has a tendency to produce erroneous translations where it repeats a single word throughout. To address this issue, the `data_cleaning.py` script will remove any instances where a single word is repeated consecutively at least three times.
